@@ -23,7 +23,7 @@ $(document).ready(function () {
                     html_txt += '<li class="list-group-item">State:  ' + res.data.state + '</li>';
                     html_txt += '<li class="list-group-item">City:  ' + res.data.city + '</li>';
                     html_txt += '<li class="list-group-item">Pincode:  ' + res.data.pincode + '</li>';
-                    html_txt += '<li class="list-group-item">Profile Access url:  '+ window.location.origin + '/api/emp?api_token=' + res.data.api_token + '&emp_id=' + res.data._id +'</li>';
+                    html_txt += '<li class="list-group-item">Profile Access url:  ' + window.location.origin + '/api/emp?api_token=' + res.data.api_token + '&emp_id=' + res.data._id + '</li>';
                     html_txt += '</ul>';
                     $('.modal-body').html(html_txt);
                 } else {
@@ -65,10 +65,21 @@ $(document).ready(function () {
                 type: 'post',
                 data: JSON.parse(json_data),
                 success: function (res) {
-                    $('#json-store').text('Inserting into Database Completed');
-                    $('#fetch_header').show();
-                    $('#array').text(res);
-                    $('#json-delete').show();
+                    if (res.code == 'success') {
+                        $('#json-store').text('Inserting into Database Completed');
+                        $('#fetch_header').show();
+                        $('#json-delete').show();
+                        $('#veh_name').text(res.data.VehAvailCore.Vehicle.VehMakeModel.Name);
+                        $('#veh_status').text(res.data.VehAvailCore.Status);
+                        $('#veh_img').attr('src', res.data.VehAvailCore.Vehicle.PictureURL);
+                        $('#veh_cat').text(res.data.VehAvailCore.Vehicle.VehType.VehicleCategory);
+                        $('#veh_ref').text(res.data.VehAvailCore.Reference['ID']);
+                        $('#veh_ref_type').text(res.data.VehAvailCore.Reference['Type']);
+                        $('#veh_tc').text(res.data.VehAvailCore.TotalCharge.RateTotalAmount + ' USD');
+                        $('#veh_trans').text(res.data.VehAvailCore.Vehicle.TransmissionType);
+                        $('#veh_asset').text(res.data.VehAvailCore.Vehicle.VehIdentity.VehicleAssetNumber);
+                        $('#veh_data').css('display','flex');
+                    }
                 }
             });
         } else {

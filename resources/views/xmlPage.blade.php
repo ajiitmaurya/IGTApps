@@ -8,6 +8,7 @@
     <title>XML Page</title>
     @include('requireBootstrapFiles')
 </head>
+
 <body class="banner-area">
     <section style="margin:30px;text-align:-webkit-center;">
         <div class="form-group">
@@ -24,6 +25,10 @@
         <button class="btn btn-primary" id="json-store" type="button" disabled>Click to Store In Database</button>
         <h2 for="exampleFormControlTextarea1" id="fetch_header" style="margin-top: 20px;">Fetched Data From Database</h2>
         <div id="array" style="margin:30px;text-align:-webkit-center;">
+        </div>
+
+        <div id="veh_data" style="display: none; text-align: -webkit-center;justify-content: space-evenly;">
+            @include('vehicleData')
         </div>
 
         <button class="btn btn-danger" id="json-delete" type="button">Click to delete Stored from Database Only</button>

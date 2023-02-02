@@ -31,44 +31,47 @@ class Controller extends BaseController
     {
 
         $inputs = Request::all();
-        $vehicle_data=$this->getArray($inputs);
-        print_r(Vehicle::create($vehicle_data)->toArray());
-
+        $vehicle_data = $this->getArray($inputs);
+        return ['code' => 'success', 'data' => Vehicle::create($vehicle_data)->toArray()];
     }
 
     public function jsonDelete()
     {
-        if(\DB::table('vehicles')->delete()){
-            return ['code'=>'success'];
+        if (\DB::table('vehicles')->delete()) {
+            return ['code' => 'success'];
         }
-
     }
 
     private function getArray($data)
     {
         $final_data = [];
         foreach ($data as $keyy => $temp) {
-            if ($keyy == '@attributes' && is_array($temp)) {
-                foreach ($temp as $k => $v) {
-                    $final_data[$k] = $v;
+            if ($keyy == '@attributes') {
+                if (is_array($temp)) {
+                    foreach ($temp as $k => $v) {
+                        $final_data[$k] = $v;
+                    }
                 }
             } else if (is_array($temp)) {
                 $final_data[$keyy] = $this->getArray($temp);
+            }else{
+                $final_data[$keyy] = $temp;  
             }
         }
         return $final_data;
     }
 
-    public function imageIndex(ImgUpload $request){
-        $img=Request::all(); 
-        $path='';
-        if(!empty($img)){
+    public function imageIndex(ImgUpload $request)
+    {
+        $img = Request::all();
+        $path = '';
+        if (!empty($img)) {
             $request->validate([
                 'image' => 'required|image|mimes:jpg,jpeg',
-               ]);
-               $path = $request->file('image')->store('images');
+            ]);
+            $path = $request->file('image')->store('images');
         }
-        return view('imageIndex',compact('path'));
+        return view('imageIndex', compact('path'));
     }
 
     function getImage($img)
